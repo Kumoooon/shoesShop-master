@@ -2,6 +2,8 @@ import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { changeName } from "../store";
 import { agePlusOne } from "../store";
+import { plusStock } from "../store";
+import { minusStock } from "../store";
 function Basket() {
   let state = useSelector((state) => {
     return state;
@@ -17,16 +19,22 @@ function Basket() {
         <td>
           <button
             onClick={() => {
-              dispatch(changeName());
+              dispatch(plusStock(i));
             }}
           >
             +
+          </button>
+          <button
+            onClick={() => {
+              dispatch(minusStock(i));
+            }}
+          >
+            -
           </button>
         </td>
       </tr>
     );
   });
-
   return (
     <div>
       <div className=" inline-block w-12 h-7 bg-fuchsia-100">
@@ -35,7 +43,7 @@ function Basket() {
       <button
         className=" w-12 h-7 bg-red-600 rounded text-center m-1 cursor-pointer inline-block"
         onClick={() => {
-          dispatch(agePlusOne());
+          dispatch(agePlusOne(1));
         }}
       >
         +age

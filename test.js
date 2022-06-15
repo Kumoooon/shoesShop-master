@@ -1,2 +1,3 @@
-const regex = /\d{3}-\d{4}-\d{4}/;
-console.log(regex.test("000-0000-0000"));
+//자주쓰는 if문
+
+//1. 컴포넌트 안에서 쓰는 if/else

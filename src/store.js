@@ -7,8 +7,8 @@ let user = createSlice({
     changeName(state) {
       return { name: "park", age: 20 };
     },
-    agePlusOne(state) {
-      state.age = state.age + 1;
+    agePlusOne(state, a) {
+      state.age += a.payload;
     },
   },
 });
@@ -20,7 +20,19 @@ let cart = createSlice({
     { id: 0, name: "White and Black", count: 2 },
     { id: 2, name: "Grey Yordan", count: 1 },
   ],
+  reducers: {
+    plusStock(state, action) {
+      state[action.payload].count += 1;
+    },
+    minusStock(state, action) {
+      if (state[action.payload].count >= 1) {
+        state[action.payload].count -= 1;
+      }
+    },
+  },
 });
+export let { plusStock } = cart.actions;
+export let { minusStock } = cart.actions;
 
 export default configureStore({
   reducer: {
