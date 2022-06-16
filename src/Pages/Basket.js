@@ -13,7 +13,7 @@ function Basket() {
     return (
       <tr key={i}>
         <td>{a.id}</td>
-        <td>{a.name}</td>
+        <td>{a.title}</td>
         <td>{a.count}</td>
 
         <td>

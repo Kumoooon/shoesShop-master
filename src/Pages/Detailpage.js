@@ -1,19 +1,20 @@
 import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Context1 } from "../App";
+import { addProductIntoCart } from "../store";
 function DetailPage(props) {
-  let { state } = useContext(Context1);
-  console.log(state);
   let { id } = useParams();
   let params = Number(id);
   let [popup, setPopup] = useState(true);
+  let [save, setSave] = useState(false);
   let [shoesCount, setShoesCount] = useState("");
   let [tap, setTap] = useState(0);
-  let [boxText, setBoxText] = useState([
-    "죽기전에 가봐야 할 곳 100 선 중에",
-    "스위스 융프라우가 있으면 좋겠다.",
-    "언젠가 가고싶어",
-  ]);
+  let state = useSelector((state) => {
+    return state;
+  });
+  console.log(props.shoes[id]);
+  let dispatch = useDispatch();
+  console.log(state.cart);
   useEffect(() => {
     setTimeout(() => {
       setPopup(false);
@@ -24,10 +25,12 @@ function DetailPage(props) {
       alert("숫자만 입력해주세요");
     }
   }, [shoesCount]);
+  const productInfo = { id: id, title: props.shoes[id].title, count: 0 };
 
   return (
     <div className=" items-center">
       {popup === true ? <Popup /> : null}
+      {save === true ? <Saved /> : null}
       <div className="row">
         <div className="col-md-6">
           <img
@@ -38,7 +41,7 @@ function DetailPage(props) {
             }
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 text-center">
           <h4 className="pt-5">{props.shoes[id].title}</h4>
           <p>{props.shoes[id].content}</p>
           <p>{props.shoes[id].price}</p>
@@ -51,7 +54,18 @@ function DetailPage(props) {
             }}
           ></input>
 
-          <button className="btn btn-danger">주문하기</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              dispatch(addProductIntoCart(productInfo));
+              setSave(true);
+              setTimeout(() => {
+                setSave(false);
+              }, 1300);
+            }}
+          >
+            주문하기
+          </button>
         </div>
       </div>
       {<Tap tap={tap} setTap={setTap} />}
@@ -61,13 +75,25 @@ function DetailPage(props) {
 
 function Popup() {
   return (
-    <div className=" w-96 h-14 bg-red-700 rounded absolute" id="popup">
+    <div
+      className=" w-96 h-14 rounded bg-indigo-600 text-center pt-3 absolute"
+      id="popup"
+    >
       2초 내에 구매하시면 할인
     </div>
   );
 }
+function Saved() {
+  return (
+    <div
+      className=" w-96 h-14 bg-emerald-500 rounded absolute pt-3 text-center "
+      id="popup"
+    >
+      상품이 장바구니로 이동하였습니다.
+    </div>
+  );
+}
 function Tapcontent(props) {
-  console.log(props.tap);
   if (props.tap === 0) {
     return (
       <div className=" opacity-0 transition-opacity duration-13 000">a</div>
